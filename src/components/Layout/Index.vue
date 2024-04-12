@@ -35,8 +35,9 @@ const isCollapse = ref(false)
     height: 100%;
     .main{
       background-color: rgb(245 245 245);
-      height: 100%;
+      height: calc(100% - 130px);
       padding: 16px;
+      // overflow: scroll;
     }
   }
 }

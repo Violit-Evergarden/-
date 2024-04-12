@@ -27,6 +27,11 @@ const router = createRouter({
           name:'personalCenter',
           component: () => import('../views/PersonalCenter/Index.vue')
         },
+        {
+          path:'employeeManagement',
+          name:'employeeManagement',
+          component: () => import('../views/EmployeeManagement/Index.vue')
+        },
       ]
     }
   ]

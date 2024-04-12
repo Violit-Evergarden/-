@@ -24,7 +24,7 @@
           <el-icon><location /></el-icon>
           <span class="menu-title">系统管理</span>
         </template>
-        <el-menu-item class="menu-title" index="2-1">用户管理</el-menu-item>
+        <el-menu-item class="menu-title" index="2-1" @click="$router.push('/employeeManagement')">员工管理</el-menu-item>
         <el-menu-item class="menu-title" index="2-2">角色管理</el-menu-item>
         <el-menu-item class="menu-title" index="2-3">岗位管理</el-menu-item>
         

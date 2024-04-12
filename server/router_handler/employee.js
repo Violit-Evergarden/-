@@ -29,5 +29,6 @@ exports.editEmployee = async (req,res) => {
 }
 
 exports.getEmployee = async (req,res) => {
-
+  const allEmployee = await Employee.findAll()
+  return res.send({status:0,message:"获取员工信息",data:allEmployee})
 }
