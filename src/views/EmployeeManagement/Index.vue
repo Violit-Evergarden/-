@@ -31,14 +31,14 @@
         <el-button @click="addNewEmployee" type="primary">添加员工</el-button>
       </div>
     </div>
-    <el-table :data="tableData" border style="width: 100%" height="800px">
-      <el-table-column prop="EmployeeID" label="员工ID" width="180" />
-      <el-table-column prop="Name" label="姓名" width="180" />
-      <el-table-column prop="Department" label="部门" />
-      <el-table-column prop="Position" label="职位" />
-      <el-table-column prop="HireDate" label="入职日期" />
-      <el-table-column prop="Email" label="邮箱" />
-      <el-table-column prop="PhoneNumber" label="电话" />
+    <el-table :data="currentPageData" border style="width: 100%;" max-height="1000px">
+      <el-table-column prop="EmployeeID" label="员工ID" min-width="100" />
+      <el-table-column prop="Name" label="姓名" min-width="88" />
+      <el-table-column prop="Department" label="部门" min-width="100" />
+      <el-table-column prop="Position" label="职位" min-width="125"/>
+      <el-table-column prop="HireDate" label="入职日期" min-width="110"/>
+      <el-table-column prop="Email" label="邮箱" min-width="200" />
+      <el-table-column prop="PhoneNumber" label="电话" min-width="130" />
       <el-table-column fixed="right" label="操作" min-width="165">
         <template #default="scope">
           <div class="btnbox">
@@ -54,6 +54,27 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="pagenation">
+      <div class="pageInfo">
+        <div class="size-choose">
+          <span>每页显示</span>
+          <el-select style="width: 70px" v-model="pageSize" placeholder="请选择">
+            <el-option v-for="i in 25" :key="i" :value="i" :label="i" />
+          </el-select>
+          <span style="margin-left: 8px;">条</span>
+        </div>
+        <span>共{{tableData.length}}条记录</span>
+      </div>
+      <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="tableData.length"
+      :hide-on-single-page="showPagenation"
+      :default-page-size="pageSize"
+      @current-change="pageChange"
+      :page-count="pageCount"
+      />
+    </div>
   </div>
   <el-dialog
     v-model="deleteDialogVisible"
@@ -118,7 +139,6 @@ import { deepClone,isSameObj } from '@/utils';
 const {$msgbox,$message,$notify} = getCurrentInstance().proxy
 const allEmployeeData = ref([])
 const toSearchData = ref([])
-// const tableData = ref([])
 const deleteDialogVisible = ref(false)
 const editInfo = ref({
   EmployeeID:'',
@@ -143,6 +163,8 @@ const positions = {
 }
 const departments = ['服务产品部','战略规划部','平台建设部','市场发展部','办公室']
 const searchCategory = ['姓名','员工ID','部门','职位','入职日期','邮箱','电话号码']
+const pageSize = ref(20)
+const currentPage = ref(1)
 const filterPositions = computed(()=>{
   let allPositions = []
   for(const key of departments){
@@ -154,6 +176,7 @@ const filterPositions = computed(()=>{
 })
 const modalTitle = computed(()=>modalMode.value==='edit'?'员工信息编辑':"新增员工信息")
 let editInfoRecord = {}
+const showPagenation = ref(false)
 
 const tableData = computed(()=>{
   let filterData = toSearchData.value
@@ -165,6 +188,19 @@ const tableData = computed(()=>{
   }
   return filterData
 })
+
+const currentPageData = computed(()=>{
+  const start = pageSize.value*(currentPage.value-1)
+  const end = pageSize.value*currentPage.value
+  return tableData.value.slice(start,end)
+})
+
+const pageCount = computed(()=>Math.ceil(tableData.value.length/pageSize.value))
+
+function pageChange(page){
+  currentPage.value = page
+}
+
 
 function SearchEmployee(){
   if(!searchValue.value) return toSearchData.value = allEmployeeData.value;
@@ -180,7 +216,6 @@ function SearchEmployee(){
   const searchKey = config[searchFilter.value]
   toSearchData.value = allEmployeeData.value.filter(item=>item[searchKey].includes(searchValue.value))
 }
-
 
 function editEmployeeInfo(idx,data){
   modalMode.value = 'edit'
@@ -271,9 +306,10 @@ main()
 
 <style lang="scss" scoped>
 #employeeContainer{
-  height: 100%;
+  height: calc(100% - 32px);
   background-color: white;
   user-select: none;
+  overflow: hidden;
   padding: 16px;
   .btnbox{
     display: flex;
@@ -293,6 +329,24 @@ main()
     }
     .right{
 
+    }
+  }
+  .pagenation{
+    display: flex;
+    padding: 16px 0;
+    justify-content: space-between;
+    .pageInfo{
+      display: flex;
+      align-items: center;
+      color: #404041;
+      .size-choose{
+        display: flex;
+        align-items: center;
+        margin-right: 16px;
+        span{
+          margin-right: 8px;
+        }
+      }
     }
   }
   

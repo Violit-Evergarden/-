@@ -1,5 +1,5 @@
 const fs = require('fs')
-
+const {pinyin} = require('pinyin-pro')
 
 exports.saveBase64Img = function (str,path,name){
   return new Promise((resolve,reject)=>{
@@ -21,4 +21,9 @@ exports.removeEmptyValues=function(obj){
     if(!obj[key]) delete obj[key]
   }
   return obj
+}
+
+exports.getNamePinyin=function(str){
+  const pinyinArr = pinyin(str,{toneType:'none',type:'array'})
+  return pinyinArr.join('')
 }

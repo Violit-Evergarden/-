@@ -5,7 +5,7 @@
       <span :class="{'title-collapse':isCollapse}">PureAdmin</span>
     </div>
     <el-menu
-      default-active="1"
+      default-active="首页"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
       text-color="#606266"
@@ -13,46 +13,46 @@
       @close="handleClose"
       @select="handleSelect"
     >
-      <el-menu-item index="1" @click="$router.push('/home')">
+      <el-menu-item index="首页" @click="$router.push('/home')">
         <el-icon><icon-menu /></el-icon>
         <template #title>
           <span class="menu-title">首页</span>
         </template>
       </el-menu-item>
-      <el-sub-menu index="2">
+      <el-sub-menu index="系统管理" v-if="isAdministrator">
         <template #title>
           <el-icon><location /></el-icon>
           <span class="menu-title">系统管理</span>
         </template>
-        <el-menu-item class="menu-title" index="2-1" @click="$router.push('/employeeManagement')">员工管理</el-menu-item>
-        <el-menu-item class="menu-title" index="2-2">角色管理</el-menu-item>
-        <el-menu-item class="menu-title" index="2-3">岗位管理</el-menu-item>
+        <el-menu-item class="menu-title" index="系统管理-员工管理" @click="$router.push('/employeeManagement')">员工管理</el-menu-item>
+        <el-menu-item class="menu-title" index="系统管理-角色管理" @click="$router.push('/characterManagement')">角色管理</el-menu-item>
+        <el-menu-item class="menu-title" index="系统管理-岗位管理" @click="$router.push('/postManagement')">岗位管理</el-menu-item>
         
       </el-sub-menu>
       
-      <el-menu-item index="3">
+      <el-menu-item index="员工基本数据" @click="$router.push('/employeeBaseinfo')">
         <el-icon><document /></el-icon>
         <template #title>
           <span class="menu-title">员工基本数据</span>
         </template>
       </el-menu-item>
-      <el-sub-menu index="4">
+      <el-sub-menu index="员工能力画像">
         <template #title>
           <el-icon><setting /></el-icon>
           <span class="menu-title">员工能力画像</span>
         </template>
-        <el-menu-item class="menu-title" index="4-1">技能分析</el-menu-item>
-        <el-menu-item class="menu-title" index="4-2">绩效评估</el-menu-item>
-        <el-menu-item class="menu-title" index="4-3">成长轨迹</el-menu-item>
-        <el-menu-item class="menu-title" index="4-4">潜力评估</el-menu-item>
+        <el-menu-item class="menu-title" index="员工能力画像-技能分析">技能分析</el-menu-item>
+        <el-menu-item class="menu-title" index="员工能力画像-绩效评估">绩效评估</el-menu-item>
+        <el-menu-item class="menu-title" index="员工能力画像-成长轨迹">成长轨迹</el-menu-item>
+        <el-menu-item class="menu-title" index="员工能力画像-潜力评估">潜力评估</el-menu-item>
       </el-sub-menu>
-      <el-menu-item index="5">
+      <el-menu-item index="个人分析">
         <el-icon><icon-menu /></el-icon>
         <template #title>
           <span class="menu-title">个人分析</span>
         </template>
       </el-menu-item>
-      <el-menu-item index="6" @click="toMyCenter">
+      <el-menu-item index="个人中心" @click="toMyCenter">
         <el-icon><user /></el-icon>
         <template #title>
           <span class="menu-title">个人中心</span>
@@ -73,7 +73,8 @@ import {
 } from '@element-plus/icons-vue'
 
 const {$router} = getCurrentInstance().proxy
-const props = defineProps({isCollapse:Boolean})
+const props = defineProps({isCollapse:Boolean,isAdministrator:{required:true}})
+const emit = defineEmits(['menuChange'])
 const handleOpen = (key, keyPath) => {
   // console.log(key, keyPath)
 }
@@ -83,6 +84,7 @@ const handleClose = (key, keyPath) => {
 
 function handleSelect(idx,idxPath,item){
   console.log(idx,idxPath,item)
+  emit('menuChange',idx)
 }
 
 function toMyCenter(){

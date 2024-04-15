@@ -1,12 +1,14 @@
 const Employee = require('../model/employee')
-const {removeEmptyValues} = require('../utils')
+const {removeEmptyValues,getNamePinyin} = require('../utils')
 
 exports.addEmployee = async (req,res) => {
   const {EmployeeID='',Name='',Department='未知',Position='未知',Email='无',HireDate='未知',PhoneNumber='未知'} = req.body
   if(!EmployeeID || !Name) return res.send({ status: 1, message: "员工数据缺失" })
   const repeater = await Employee.findAll({where:{EmployeeID}})
   if(repeater.length>=1) return res.send({ status: 1, message: "员工ID重复" })
-  const newEmployee = await Employee.create({EmployeeID,Name,Department,Position,Email,HireDate,PhoneNumber})
+  const NamePinyin = getNamePinyin(Name)
+  const Avator = 'http://127.0.0.1:3007/assets/avator/default.png'
+  const newEmployee = await Employee.create({EmployeeID,Name,Department,Position,Email,HireDate,PhoneNumber,NamePinyin,Avator})
   res.send({status:0,message:'添加成功',data:newEmployee})
 }
 
@@ -23,6 +25,7 @@ exports.editEmployee = async (req,res) => {
   const {EmployeeID} = updateEmployeeInfo
   delete updateEmployeeInfo[EmployeeID]
   if(!EmployeeID) return res.send({ status: 1, message: "员工ID数据缺失" })
+  updateEmployeeInfo.NamePinyin = getNamePinyin(updateEmployeeInfo.Name)
   const result = await Employee.update(updateEmployeeInfo,{where:{EmployeeID}})
   if(result[0]===1) return res.send({status:0,message:"修改成功"})
   return res.send({status:1,message:"修改失败"})

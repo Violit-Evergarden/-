@@ -18,8 +18,10 @@ app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api/,/^\
 
 const userRouter = require('./router/user')
 const employeeRouter = require('./router/employee')
+const userInfoRouter = require('./router/userinfo')
 app.use('/api',userRouter)
 app.use('/administrator',employeeRouter)
+app.use('/my',userInfoRouter)
 
 
 

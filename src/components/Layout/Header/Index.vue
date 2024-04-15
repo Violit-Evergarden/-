@@ -8,9 +8,8 @@
         </div>
         <div class="bread">
           <el-breadcrumb :separator-icon="ArrowRight">
-            <el-breadcrumb-item class="bread-item">首页</el-breadcrumb-item>
-            <el-breadcrumb-item class="bread-item">系统管理</el-breadcrumb-item>
-            <el-breadcrumb-item class="bread-item">用户管理</el-breadcrumb-item>
+            <el-breadcrumb-item class="bread-item" @click="$router.push('/home')">首页</el-breadcrumb-item>
+            <el-breadcrumb-item class="bread-item" v-for="(item,idx) in breadsArray" :key="idx">{{item}}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </div>
@@ -32,8 +31,8 @@
         <div class="userbox">
           <el-dropdown>
             <div class="user">
-              <img class="avator" src="./images/avator.jpg" alt="">
-              <span class="name">欢迎您，古月</span>
+              <img class="avator" :src="userinfo.Avator" alt="">
+              <span class="name">欢迎您，{{ userinfo.Nickname || userinfo.Name }}</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
               </el-icon>
@@ -55,7 +54,7 @@
       </div>
     </div>
     <div class="history-block">
-      <div @click="historyBlockClick(idx,item)" class="block" v-for="(item,idx) in historyBlock" :key="idx" :class="{'active-blcok':idx===activeBlockIdx}">
+      <div @click="historyBlockClick(idx,item)" class="block" v-for="(item,idx) in historyPageArray" :key="idx" :class="{'active-blcok':idx===activeBlockIdx}">
         <i class="dot"></i>
         <span>{{ item }}</span>
         <el-icon @click.stop="closeHistoryBlock(idx)" class="close"><close /></el-icon>
@@ -68,9 +67,11 @@
 import { ArrowRight,ArrowDown,Close  } from '@element-plus/icons-vue'
 import {ref,reactive,getCurrentInstance} from 'vue'
 
-const {$router} = getCurrentInstance().proxy 
+const props = defineProps({userinfo:{type:Object,default:{}},breadsArray:{type:Array,default:[]}})
+const {$router,$notify} = getCurrentInstance().proxy 
 const isCollapse = defineModel('isCollapse',{required:true})
-const historyBlock = reactive(['首页','系统管理','员工能力画像','员工基本数据'])
+const historyPageArray = defineModel('historyPageArray',{required:true})
+// const historyBlock = reactive(['首页','系统管理','员工能力画像','员工基本数据'])
 const activeBlockIdx = ref(0)
 
 const collapse = () =>isCollapse.value = true
@@ -81,7 +82,7 @@ function historyBlockClick(idx,item){
 }
 
 function closeHistoryBlock(idx){
-  historyBlock.splice(idx,1)
+  historyPageArray.value.splice(idx,1)
 }
 
 function toMyCenter(){
@@ -92,6 +93,7 @@ function logout(){
   $router.replace('/login')
   localStorage.removeItem('token')
 }
+
 
 
 
@@ -124,6 +126,7 @@ function logout(){
       margin-left: 4px;
       .bread-item{
         font-size: 16px;
+        cursor: pointer;
         color: #000000A6;
         .el-breadcrumb__inner{
           cursor: pointer !important;
@@ -174,6 +177,11 @@ function logout(){
     align-items: center;
     height: 40px;
     border-bottom: 1px solid #dcdfe6;
+    overflow: auto;
+    scrollbar-width: none;
+    ::-webkit-scrollbar {
+      display: none;
+    }
     .block{
       display: flex;
       align-items: center;
@@ -183,6 +191,8 @@ function logout(){
       color: #333333;
       cursor: pointer;
       transition: .2s;
+      // min-width: 100px;
+      text-wrap: nowrap;
       &:hover{
         // color: #4D70FF;
       }

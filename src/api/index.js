@@ -12,3 +12,5 @@ export const addEmployee = data =>request.post('/administrator/addEmployee',data
 export const deleteEmployee = data =>request.post('/administrator/deleteEmployee',data)
 
 export const editEmployee = data =>request.post('/administrator/editEmployee',data)
+
+export const getUserInfo = () => request.get('/my/getUserinfo')

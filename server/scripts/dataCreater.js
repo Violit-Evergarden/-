@@ -8,6 +8,7 @@
 // }
 
 const Employee = require('../model/employee')
+const {getNamePinyin} = require('../utils')
 
 
 function getRandomName(){
@@ -82,23 +83,36 @@ function createEmployee(){
   const Email = getRandEmail()
   const HireDate = getRandomDate(2000,2024)
   const PhoneNumber = getRandMoble()
+  const NamePinyin = getNamePinyin(Name)
+  const Avator = 'http://127.0.0.1:3007/assets/avator/default.png'
   const employee = {
     Name,
     Department,
     Position,
     Email,
     HireDate,
-    PhoneNumber
+    PhoneNumber,
+    NamePinyin,
+    Avator
   }
   return employee
 }
 
-// async function EmployeeCreater(){
-//   for(let i=0;i<100;i++){
-//     const employee = createEmployee()
-//     employee.EmployeeID = 10000000+i
-//     const result = await Employee.create(employee)
-//   }
-// }
+async function EmployeeCreater(){
+  for(let i=0;i<100;i++){
+    const employee = createEmployee()
+    employee.EmployeeID = 10000000+i
+    const result = await Employee.create(employee)
+  }
+}
 
-// EmployeeCreater()
+async function EmployeeDeleter(){
+  const result = await Employee.destroy({
+    where: {},
+    truncate: true
+  })
+  console.log(result)
+}
+
+EmployeeCreater()
+// EmployeeDeleter()

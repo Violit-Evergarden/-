@@ -26,10 +26,16 @@
 <script setup>
 import {ref,getCurrentInstance} from 'vue'
 import {login,register} from '@/api'
+import useUserInfoStore from '@/stores/userinfo';
+import { getTimeState } from '@/utils';
+import { storeToRefs } from 'pinia';
 
 const {$message,$router,$notify} = getCurrentInstance().appContext.config.globalProperties
 const username = ref('')
 const password = ref('')
+const store = useUserInfoStore()
+const {userinfo} = storeToRefs(store)
+const {getUserInfoData} = store
 
 async function loginClick(){
   if(!username.value || !password.value) return $message({type:'warning',message:'用户名或密码不能为空！'})
@@ -43,31 +49,12 @@ async function loginClick(){
     password.value = ''
     localStorage.setItem('token',token)
     $router.push({name:'home'})
+    await getUserInfoData()
     $notify.success({
-      title:message,
-      message:`${getTimeState()} 苦逼牛马施`
-    })
+    message:'登录成功',
+    title:`${getTimeState()} ${userinfo.value.Name}`
+  })
   }
-}
-
-function getTimeState(){
-    // 获取当前时间
-    let timeNow = new Date();
-    // 获取当前小时
-    let hours = timeNow.getHours();
-    // 设置默认文字
-    let state= ``;
-    // 判断当前时间段
-    if (hours >= 0 && hours <= 10) {
-        state = `早上好!`;
-    } else if (hours > 10 && hours <= 14) {
-        state= `中午好!`;
-    } else if (hours > 14 && hours <= 18) {
-        state= `下午好!`;
-    } else if (hours > 18 && hours <= 24) {
-        state= `晚上好!`;
-    }
-    return state;
 }
 
 
