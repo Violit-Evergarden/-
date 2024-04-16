@@ -1,16 +1,16 @@
 const fs = require('fs')
 const {pinyin} = require('pinyin-pro')
 
-exports.saveBase64Img = function (str,path,name){
+exports.saveBase64Img = function (str,path){
   return new Promise((resolve,reject)=>{
     const data = str.replace(/^data:image\/\w+;base64,/, "")
     const bufferData =  Buffer.from(data,'base64')
-    fs.writeFile(`${path}/${name}.png`,bufferData,err => {
+    fs.writeFile(path,bufferData,err => {
       if(err) {
         console.log(err)
         reject(err)
       }else {
-        resolve(name)
+        resolve(path)
       }
     })
   })

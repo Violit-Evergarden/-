@@ -1,4 +1,5 @@
 const {pinyin} = require('pinyin-pro')
+const path = require('path')
 
 // console.log(pinyin('施桥远'))
 
@@ -7,4 +8,4 @@ function getNamePinyin(str){
   return pinyinArr.join('')
 }
 
-console.log(getNamePinyin('施桥远'))
+console.log(path.join(__dirname,'../assets/avator'))

@@ -12,7 +12,7 @@ app.use('/assets',express.static(path.join(__dirname,'assets')))
 const expressJWT = require('express-jwt')
 const config = require('./config')
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '10mb'}))
 
 app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api/,/^\/assets/] }))
 

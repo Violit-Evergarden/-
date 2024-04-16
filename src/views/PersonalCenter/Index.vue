@@ -3,26 +3,27 @@
     <div class="infoCard">
       <div class="intro">
         <img :src="userinfo.Avator" alt="">
-        <div class="uploader">
-          <el-icon class="edit"><UploadFilled /></el-icon>
-        </div>
+        <label for="file" class="uploader">
+          <el-icon><UploadFilled /></el-icon>
+        </label>
+        <input id="file" style="display: none;" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" @change="selectImg">
         <div class="nickname">
-          <span>Serati Ma</span>
+          <span>{{ userinfo.Nickname || '昵称' }}</span>
           <el-icon class="edit"><EditPen /></el-icon>
         </div>
         <div class="signature">
-          <span>海纳百川，有容乃大</span>
+          <span>{{userinfo.Signature || '个性签名'}}</span>
           <el-icon class="edit"><EditPen /></el-icon>
         </div>
       </div>
       <div class="compInfo">
         <div class="post">
           <svg viewBox="64 64 896 896" focusable="false" data-icon="contacts" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M594.3 601.5a111.8 111.8 0 0029.1-75.5c0-61.9-49.9-112-111.4-112s-111.4 50.1-111.4 112c0 29.1 11 55.5 29.1 75.5a158.09 158.09 0 00-74.6 126.1 8 8 0 008 8.4H407c4.2 0 7.6-3.3 7.9-7.5 3.8-50.6 46-90.5 97.2-90.5s93.4 40 97.2 90.5c.3 4.2 3.7 7.5 7.9 7.5H661a8 8 0 008-8.4c-2.8-53.3-32-99.7-74.7-126.1zM512 578c-28.5 0-51.7-23.3-51.7-52s23.2-52 51.7-52 51.7 23.3 51.7 52-23.2 52-51.7 52zm416-354H768v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H548v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H328v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H96c-17.7 0-32 14.3-32 32v576c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V256c0-17.7-14.3-32-32-32zm-40 568H136V296h120v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h120v496z"></path></svg>
-          <span>交互专家</span>
+          <span>{{userinfo.Position}}</span>
         </div>
         <div class="positon">
           <svg viewBox="64 64 896 896" focusable="false" data-icon="cluster" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M888 680h-54V540H546v-92h238c8.8 0 16-7.2 16-16V168c0-8.8-7.2-16-16-16H240c-8.8 0-16 7.2-16 16v264c0 8.8 7.2 16 16 16h238v92H190v140h-54c-4.4 0-8 3.6-8 8v176c0 4.4 3.6 8 8 8h176c4.4 0 8-3.6 8-8V688c0-4.4-3.6-8-8-8h-54v-72h220v72h-54c-4.4 0-8 3.6-8 8v176c0 4.4 3.6 8 8 8h176c4.4 0 8-3.6 8-8V688c0-4.4-3.6-8-8-8h-54v-72h220v72h-54c-4.4 0-8 3.6-8 8v176c0 4.4 3.6 8 8 8h176c4.4 0 8-3.6 8-8V688c0-4.4-3.6-8-8-8zM256 805.3c0 1.5-1.2 2.7-2.7 2.7h-58.7c-1.5 0-2.7-1.2-2.7-2.7v-58.7c0-1.5 1.2-2.7 2.7-2.7h58.7c1.5 0 2.7 1.2 2.7 2.7v58.7zm288 0c0 1.5-1.2 2.7-2.7 2.7h-58.7c-1.5 0-2.7-1.2-2.7-2.7v-58.7c0-1.5 1.2-2.7 2.7-2.7h58.7c1.5 0 2.7 1.2 2.7 2.7v58.7zM288 384V216h448v168H288zm544 421.3c0 1.5-1.2 2.7-2.7 2.7h-58.7c-1.5 0-2.7-1.2-2.7-2.7v-58.7c0-1.5 1.2-2.7 2.7-2.7h58.7c1.5 0 2.7 1.2 2.7 2.7v58.7zM360 300a40 40 0 1080 0 40 40 0 10-80 0z"></path></svg>
-          <span>蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED</span>
+          <span>{{ `湖北技术交易所 - ${userinfo.Department} - ${userinfo.Position}` }}</span>
         </div>
         <div class="home">
           <svg viewBox="64 64 896 896" focusable="false" data-icon="home" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 00-44.4 0L77.5 505a63.9 63.9 0 00-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0018.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z"></path></svg>
@@ -42,17 +43,39 @@
       </div>
     </div>
   </div>
+  <Cropper :imgBase="imgBase64" v-model:modalIndex="modalIndex" />
 </template>
 
 <script setup>
+import { ref, getCurrentInstance } from 'vue';
 import { storeToRefs } from 'pinia';
 import useUserInfoStore from '@/stores/userinfo';
 import {UploadFilled,EditPen} from '@element-plus/icons-vue' 
+import Cropper from './Cropper/Index.vue'
 
+const { $message } = getCurrentInstance().proxy
 const store = useUserInfoStore()
 const {userinfo} = storeToRefs(store)
+const {getUserInfoData} = store
+const imgBase64 = ref('')
+const modalIndex = ref(-100)
 
 const signatures = ['很有想法的','专注设计','辣~','大长腿','川妹子','海纳百川','房贷首付']
+
+
+function selectImg(e){
+  const file = e.target.files[0]
+  const path = e.target.value
+  if(!/\.(jpg|jpeg|png|JPG|PNG)$/.test(path)) return $message.warning('请选择图片类型文件')
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onload = e =>{
+    imgBase64.value = reader.result
+    modalIndex.value = 1000
+  }
+}
+
+
 
 </script>
 

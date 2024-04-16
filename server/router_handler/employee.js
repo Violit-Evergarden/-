@@ -1,5 +1,6 @@
 const Employee = require('../model/employee')
-const {removeEmptyValues,getNamePinyin} = require('../utils')
+const path = require('path')
+const {removeEmptyValues,getNamePinyin,saveBase64Img} = require('../utils')
 
 exports.addEmployee = async (req,res) => {
   const {EmployeeID='',Name='',Department='未知',Position='未知',Email='无',HireDate='未知',PhoneNumber='未知'} = req.body
@@ -22,10 +23,20 @@ exports.deleteEmployee = async (req,res) => {
 
 exports.editEmployee = async (req,res) => {
   const updateEmployeeInfo = req.body
-  const {EmployeeID} = updateEmployeeInfo
+  const {EmployeeID,Base64Str,Name} = updateEmployeeInfo
+  if(Base64Str){
+    const randomEnd = Base64Str[Math.floor(Math.random()*100)]+Math.floor(Math.random()*100)
+    const imgPath = path.join(__dirname,`../assets/avator/${EmployeeID}${randomEnd}.png`)
+    const getImgPath = `${req.protocol}://${req.get('host')}/assets/avator/${EmployeeID}${randomEnd}.png`
+    saveBase64Img(Base64Str,imgPath)
+    updateEmployeeInfo.Avator = getImgPath
+    delete updateEmployeeInfo.Base64Str
+  }
+  if(Name){
+    updateEmployeeInfo.NamePinyin = getNamePinyin(updateEmployeeInfo.Name)
+  }
   delete updateEmployeeInfo[EmployeeID]
   if(!EmployeeID) return res.send({ status: 1, message: "员工ID数据缺失" })
-  updateEmployeeInfo.NamePinyin = getNamePinyin(updateEmployeeInfo.Name)
   const result = await Employee.update(updateEmployeeInfo,{where:{EmployeeID}})
   if(result[0]===1) return res.send({status:0,message:"修改成功"})
   return res.send({status:1,message:"修改失败"})

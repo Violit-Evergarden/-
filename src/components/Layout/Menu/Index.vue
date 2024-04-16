@@ -42,7 +42,7 @@
           <span class="menu-title">员工能力画像</span>
         </template>
         <el-menu-item class="menu-title" index="员工能力画像-技能分析">技能分析</el-menu-item>
-        <el-menu-item class="menu-title" index="员工能力画像-绩效评估">绩效评估</el-menu-item>
+        <el-menu-item @click="$router.push('/performanceAppraisal')" class="menu-title" index="员工能力画像-绩效评估">绩效评估</el-menu-item>
         <el-menu-item class="menu-title" index="员工能力画像-成长轨迹">成长轨迹</el-menu-item>
         <el-menu-item class="menu-title" index="员工能力画像-潜力评估">潜力评估</el-menu-item>
       </el-sub-menu>

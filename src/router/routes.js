@@ -49,6 +49,11 @@ export default [
         name:'postManagement',
         component: () => import('../views/PostManagement/Index.vue')
       },
+      {
+        path:'performanceAppraisal',
+        name:'performanceAppraisal',
+        component: () => import('../views/PerformanceAppraisal/Index.vue')
+      },
     ]
   }
 ]
