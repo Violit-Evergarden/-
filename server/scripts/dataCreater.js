@@ -85,6 +85,8 @@ function createEmployee(){
   const PhoneNumber = getRandMoble()
   const NamePinyin = getNamePinyin(Name)
   const Avator = 'http://127.0.0.1:3007/assets/avator/default.png'
+  const Gender = Math.random()>0.5?'男':"女"
+  const SystemRights = 0
   const employee = {
     Name,
     Department,
@@ -93,7 +95,9 @@ function createEmployee(){
     HireDate,
     PhoneNumber,
     NamePinyin,
-    Avator
+    Avator,
+    Gender,
+    SystemRights
   }
   return employee
 }
@@ -102,8 +106,21 @@ async function EmployeeCreater(){
   for(let i=0;i<100;i++){
     const employee = createEmployee()
     employee.EmployeeID = 10000000+i
-    const result = await Employee.create(employee)
+    Employee.create(employee)
   }
+  Employee.create({
+    EmployeeID:10000100,
+    Name:'施桥远',
+    Department:'市场发展部',
+    Position:'高级技术交易员',
+    Email:'2232102177@qq.com',
+    HireDate:'2024-4-18',
+    PhoneNumber:'17762984593',
+    NamePinyin:getNamePinyin('施桥远'),
+    Avator:'http://127.0.0.1:3007/assets/avator/default.png',
+    Gender:'男',
+    SystemRights:10
+  })
 }
 
 async function EmployeeDeleter(){
